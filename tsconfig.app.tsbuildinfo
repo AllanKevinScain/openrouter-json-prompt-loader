@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/components/generationstatus.tsx","./src/components/promptoutput.tsx","./src/components/specificationview.tsx","./src/components/taskform.tsx","./src/hooks/usegenerateprompt.ts","./src/services/openrouter.ts","./src/services/promptbuilder.ts","./src/types/prompt.ts"],"version":"5.6.3"}
