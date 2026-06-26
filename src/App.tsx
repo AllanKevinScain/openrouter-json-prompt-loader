@@ -1,7 +1,6 @@
 import { AlertCircle, Code2 } from 'lucide-react';
-import { PromptOutput } from './components/PromptOutput';
 import { GenerationStatus } from './components/GenerationStatus';
-import { SpecificationView } from './components/SpecificationView';
+import { JsonPanel } from './components/JsonPanel';
 import { TaskForm } from './components/TaskForm';
 import { useGeneratePrompt } from './hooks/useGeneratePrompt';
 import type { TaskFormValues } from './types/prompt';
@@ -55,8 +54,14 @@ function App() {
 
             {generatePromptMutation.data ? (
               <>
-                <SpecificationView specification={generatePromptMutation.data.specification} />
-                <PromptOutput prompt={generatePromptMutation.data.finalPrompt} />
+                <JsonPanel
+                  data={generatePromptMutation.data.specification}
+                  title="JSON da especificação"
+                />
+                <JsonPanel
+                  data={generatePromptMutation.data.finalPromptJson}
+                  title="Prompt final em JSON"
+                />
               </>
             ) : !generatePromptMutation.isPending ? (
               <div className="rounded-lg border border-dashed border-line bg-white p-8 text-center text-sm leading-6 text-ink/65">

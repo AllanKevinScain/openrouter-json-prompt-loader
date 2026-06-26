@@ -176,9 +176,14 @@ export const generatePrompt = async (
   }
 
   const specification = parseSpecification(content);
+  const finalPrompt = buildCodexPrompt(specification);
 
   return {
     specification,
-    finalPrompt: buildCodexPrompt(specification),
+    finalPrompt,
+    finalPromptJson: {
+      prompt: finalPrompt,
+      specification,
+    },
   };
 };

@@ -10,6 +10,10 @@ export type PromptSpecification = {
 export type PromptGenerationResult = {
   specification: PromptSpecification;
   finalPrompt: string;
+  finalPromptJson: {
+    prompt: string;
+    specification: PromptSpecification;
+  };
 };
 
 export type TaskFormValues = {
