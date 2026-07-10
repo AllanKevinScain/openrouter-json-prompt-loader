@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import type { ThemeType } from '../types/theme';
 import { DEFAULT_THEME, isThemeType } from '../utils/theme-options';
 
-const STORAGE_KEY = 'prompt-loader:theme';
+const STORAGE_KEY = 'theme';
 
 const getStoredTheme = (): ThemeType => {
   if (typeof window === 'undefined') {
