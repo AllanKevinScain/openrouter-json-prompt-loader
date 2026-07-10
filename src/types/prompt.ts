@@ -1,11 +1,7 @@
-export type PromptSpecification = {
-  contexto: string;
-  requisitos: string[];
-  nao_requisitos: string[];
-  criterios_aceite: string[];
-  contrato: string;
-  plano_teste: string[];
-};
+import type { PromptSpecification } from '../schemas/prompt-specification.schema';
+import type { TaskFormValues } from '../schemas/task-form.schema';
+
+export type { PromptSpecification, TaskFormValues };
 
 export type PromptGenerationResult = {
   specification: PromptSpecification;
@@ -14,8 +10,4 @@ export type PromptGenerationResult = {
     prompt: string;
     specification: PromptSpecification;
   };
-};
-
-export type TaskFormValues = {
-  taskDescription: string;
 };

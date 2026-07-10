@@ -1,14 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2, WandSparkles } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+import { taskFormSchema } from '../schemas/task-form.schema';
 import type { TaskFormValues } from '../types/prompt';
-
-const schema = z.object({
-  taskDescription: z
-    .string()
-    .min(12, 'Descreva a tarefa com um pouco mais de contexto.'),
-});
 
 type TaskFormProps = {
   isLoading: boolean;
@@ -21,7 +15,7 @@ export function TaskForm({ isLoading, onSubmit }: TaskFormProps) {
     handleSubmit,
     register,
   } = useForm<TaskFormValues>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(taskFormSchema),
     defaultValues: {
       taskDescription:
         'Preciso de um endpoint REST para cadastrar usuários com nome, email e senha, com validação e hash de senha.',

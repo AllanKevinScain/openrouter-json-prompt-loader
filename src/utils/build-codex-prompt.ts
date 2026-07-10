@@ -1,4 +1,4 @@
-import type { PromptSpecification } from '../types/prompt';
+import type { PromptSpecification } from '../schemas/prompt-specification.schema';
 
 const formatList = (items: string[]) => items.map((item) => `- ${item}`).join('\n');
 

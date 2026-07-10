@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { useState, type ReactNode } from 'react';
 
@@ -19,11 +20,23 @@ export function Accordion({ title, defaultOpen = true, children }: AccordionProp
         type="button"
       >
         <h2 className="text-base font-bold text-ink">{title}</h2>
-        <ChevronDown
-          className={`size-4 shrink-0 text-ink/60 transition-transform ${open ? 'rotate-180' : ''}`}
-        />
+        <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
+          <ChevronDown className="size-4 shrink-0 text-ink/60" />
+        </motion.span>
       </button>
-      {open ? <div className="border-t border-line">{children}</div> : null}
+      <AnimatePresence initial={false}>
+        {open ? (
+          <motion.div
+            animate={{ height: 'auto', opacity: 1 }}
+            className="overflow-hidden border-t border-line"
+            exit={{ height: 0, opacity: 0 }}
+            initial={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+          >
+            {children}
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </section>
   );
 }
