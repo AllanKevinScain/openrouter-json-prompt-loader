@@ -4,11 +4,10 @@ import { JsonView, collapseAllNested, defaultStyles } from 'react-json-view-lite
 import 'react-json-view-lite/dist/index.css';
 
 type JsonPanelProps = {
-  title: string;
   data: unknown;
 };
 
-export function JsonPanel({ title, data }: JsonPanelProps) {
+export function JsonPanel({ data }: JsonPanelProps) {
   const [copied, setCopied] = useState(false);
 
   const serializedData = useMemo(() => JSON.stringify(data, null, 2), [data]);
@@ -20,9 +19,8 @@ export function JsonPanel({ title, data }: JsonPanelProps) {
   };
 
   return (
-    <section className="overflow-hidden rounded-lg border border-line bg-white shadow-panel">
-      <div className="flex min-h-14 items-center justify-between gap-3 border-b border-line px-4 py-3">
-        <h2 className="text-base font-bold text-ink">{title}</h2>
+    <div className="p-4 text-sm">
+      <div className="mb-3 flex justify-end">
         <button
           className="inline-flex size-10 items-center justify-center rounded-lg border border-line bg-white text-ink transition hover:border-leaf hover:text-moss"
           onClick={handleCopy}
@@ -32,7 +30,7 @@ export function JsonPanel({ title, data }: JsonPanelProps) {
           {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
         </button>
       </div>
-      <div className="max-h-[420px] overflow-auto bg-paper/50 p-4 text-sm">
+      <div className="max-h-[420px] overflow-auto rounded-lg bg-paper/50 p-4">
         <JsonView
           clickToExpandNode
           data={data as object}
@@ -40,6 +38,6 @@ export function JsonPanel({ title, data }: JsonPanelProps) {
           style={defaultStyles}
         />
       </div>
-    </section>
+    </div>
   );
 }

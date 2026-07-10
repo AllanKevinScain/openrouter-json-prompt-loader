@@ -1,6 +1,8 @@
-import { AlertCircle, Code2 } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
+import { Accordion } from './components/Accordion';
 import { GenerationStatus } from './components/GenerationStatus';
 import { JsonPanel } from './components/JsonPanel';
+import { PromptTextPanel } from './components/PromptTextPanel';
 import { TaskForm } from './components/TaskForm';
 import { useGeneratePrompt } from './hooks/useGeneratePrompt';
 import type { TaskFormValues } from './types/prompt';
@@ -15,22 +17,6 @@ function App() {
   return (
     <main className="min-h-screen bg-paper">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
-        <header className="flex flex-col gap-4 border-b border-line pb-6 md:flex-row md:items-end md:justify-between">
-          <div className="max-w-3xl">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-line bg-white px-3 py-1 text-sm font-semibold text-moss">
-              <Code2 className="size-4" />
-              Prompt Codex
-            </div>
-            <h1 className="text-3xl font-bold leading-tight text-ink sm:text-4xl">
-              Transforme uma tarefa em um prompt técnico pronto para implementação.
-            </h1>
-            <p className="mt-3 max-w-2xl text-base leading-7 text-ink/70">
-              Descreva o que precisa ser construído e gere uma especificação objetiva com
-              contexto, requisitos, contrato, critérios de aceite e plano de teste.
-            </p>
-          </div>
-        </header>
-
         <section className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
           <div className="h-fit rounded-lg border border-line bg-white p-5 shadow-panel">
             <TaskForm
@@ -54,14 +40,12 @@ function App() {
 
             {generatePromptMutation.data ? (
               <>
-                <JsonPanel
-                  data={generatePromptMutation.data.specification}
-                  title="JSON da especificação"
-                />
-                <JsonPanel
-                  data={generatePromptMutation.data.finalPromptJson}
-                  title="Prompt final em JSON"
-                />
+                <Accordion defaultOpen title="Prompt">
+                  <PromptTextPanel prompt={generatePromptMutation.data.finalPrompt} />
+                </Accordion>
+                <Accordion defaultOpen title="JSON completo">
+                  <JsonPanel data={generatePromptMutation.data.finalPromptJson} />
+                </Accordion>
               </>
             ) : !generatePromptMutation.isPending ? (
               <div className="rounded-lg border border-dashed border-line bg-white p-8 text-center text-sm leading-6 text-ink/65">

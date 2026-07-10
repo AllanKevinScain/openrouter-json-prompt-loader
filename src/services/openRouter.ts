@@ -133,7 +133,7 @@ export const generatePrompt = async (
       Authorization: `Bearer ${apiKey}`,
       'Content-Type': 'application/json',
       'HTTP-Referer': window.location.origin,
-      'X-Title': 'Prompt Codex App',
+      'X-Title': 'Prompt Loader',
     },
     body: JSON.stringify({
       model,
