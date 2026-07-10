@@ -46,15 +46,13 @@ export function GenerationStatus() {
   }, [elapsedSeconds]);
 
   return (
-    <section className="rounded-lg border border-leaf/30 bg-white p-5 shadow-panel">
-      <div className="flex flex-col gap-2 border-b border-line pb-4 sm:flex-row sm:items-center sm:justify-between">
+    <section className="card p-5">
+      <div className="flex flex-col gap-2 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-lg font-bold text-ink">Gerando prompt</h2>
-          <p className="text-sm leading-6 text-ink/65">
-            Tempo decorrido: {elapsedSeconds}s
-          </p>
+          <h2 className="text-lg font-bold text-text">Gerando prompt</h2>
+          <p className="text-sm leading-6 text-text/65">Tempo decorrido: {elapsedSeconds}s</p>
         </div>
-        <div className="inline-flex min-h-9 items-center gap-2 self-start rounded-lg bg-leaf/10 px-3 py-2 text-sm font-semibold text-moss">
+        <div className="inline-flex min-h-9 items-center gap-2 self-start rounded-lg bg-primary/10 px-3 py-2 text-sm font-semibold text-primary">
           <Loader2 className="size-4 animate-spin" />
           Processando
         </div>
@@ -69,22 +67,20 @@ export function GenerationStatus() {
           return (
             <li
               className={`flex gap-3 rounded-lg border p-3 transition ${
-                isActive
-                  ? 'border-leaf/40 bg-leaf/10'
-                  : 'border-line bg-paper/40'
+                isActive ? 'border-primary/40 bg-primary/10' : 'border-border surface'
               }`}
               key={step.label}
             >
               <div
                 className={`flex size-9 shrink-0 items-center justify-center rounded-lg ${
-                  isDone || isActive ? 'bg-moss text-white' : 'bg-white text-ink/45'
+                  isDone || isActive ? 'bg-primary text-white' : 'surface text-text/45'
                 }`}
               >
                 {isDone ? <CheckCircle2 className="size-4" /> : <Icon className="size-4" />}
               </div>
               <div>
-                <p className="text-sm font-bold text-ink">{step.label}</p>
-                <p className="mt-1 text-sm leading-6 text-ink/65">{step.detail}</p>
+                <p className="text-sm font-bold text-text">{step.label}</p>
+                <p className="mt-1 text-sm leading-6 text-text/65">{step.detail}</p>
               </div>
             </li>
           );

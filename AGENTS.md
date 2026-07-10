@@ -9,7 +9,8 @@ Fluxo de uso:
 1. O usuário digita a descrição da tarefa em um formulário (`TaskForm`).
 2. O app envia essa descrição para a API do **OpenRouter** (dentro do hook `src/hook/use-generate-prompt.ts`), pedindo a um modelo de IA que gere uma especificação técnica em JSON.
 3. A especificação recebida é validada/normalizada com **zod** (`src/schemas/prompt-specification.schema.ts`) e usada para montar um **prompt final em texto** (`src/utils/build-codex-prompt.ts`), com instruções de execução para o agente que for implementar.
-4. A tela inicial (`src/pages/home-page.tsx`) exibe dois accordions: o **prompt** final em texto puro e o **JSON completo** (prompt + especificação), cada um com botão de copiar.
+4. Antes de gerar, o usuário escolhe o modelo em um `<select>` (`ModelPicker`, lista em `src/utils/openrouter-models.ts`); a escolha é salva no `localStorage` (`src/utils/model-storage.ts`) e recarregada automaticamente na próxima visita.
+5. A tela inicial (`src/pages/home-page.tsx`) exibe dois accordions com o resultado: o **prompt** final em texto puro e o **JSON completo** (prompt + especificação), cada um com botão de copiar.
 
 A chamada ao OpenRouter é feita diretamente do frontend (chave de API fica no bundle do navegador) — adequado para uso local/pessoal, não para produção sem um backend/proxy.
 
@@ -51,18 +52,21 @@ Na UI, `finalPrompt` é renderizado como texto (`PromptTextPanel`) e `finalPromp
 
 ## Como e com que regras o projeto foi construído
 
-- **Stack**: React 19 + Vite 6 + TypeScript, Tailwind CSS para estilo, `framer-motion` para animações (accordion), `@tanstack/react-query` (`useQuery`) para a chamada assíncrona ao OpenRouter, `react-hook-form` + `zod` para o formulário, `lucide-react` para ícones, `react-json-view-lite` para exibir JSON.
+- **Stack**: React 19 + Vite 6 + TypeScript, Tailwind CSS v4 para estilo (via `@tailwindcss/vite`), `framer-motion` para animações (accordion, menu de tema), `@tanstack/react-query` (`useQuery`) para a chamada assíncrona ao OpenRouter, `react-hook-form` + `zod` para o formulário, `lucide-react` para ícones, `tailwind-merge` para compor classes condicionais, `react-json-view-lite` para exibir JSON.
+- **Tema visual**: o app tem 6 temas trocáveis em tempo real — `light`, `dark` (padrão), `rocketseat`, `minecraft`, `alura` e `instagram` — cada um definindo `--color-bg`, `--color-text`, `--color-primary`, `--color-secondary` e `--color-border` em `src/styles.css` via seletor `[data-theme="..."]`. `src/hook/use-theme.ts` (`useTheme`) lê/persiste o tema escolhido no `localStorage` (`prompt-loader:theme`) e aplica o atributo `data-theme` em `document.documentElement`. `src/components/theme-menu.tsx` (`ThemeMenu`) é o botão/dropdown de troca, renderizado no header em `app.tsx`. As opções ficam em `src/utils/theme-options.ts` (`THEME_OPTIONS`) e o tipo em `src/types/theme.ts` (`ThemeType`).
+- **Tailwind v4**: `tailwind.config.ts` mapeia os tokens `bg`/`text`/`primary`/`secondary`/`border` para as variáveis CSS acima; `src/styles.css` carrega esse config com `@config "../tailwind.config.ts";` (tem que vir antes de `@import 'tailwindcss';`) e define as classes utilitárias `.card` e `.surface` (superfícies com `color-mix` sobre `--color-bg`/`--color-text`) dentro de `@layer components`. Não há mais `postcss.config.js`/`autoprefixer` — o plugin `@tailwindcss/vite` cuida de tudo no `vite.config.ts`.
 - **React Compiler**: configurado via `babel-plugin-react-compiler` como primeiro plugin do Babel em `vite.config.ts` (dentro de `react({ babel: { plugins: [...] } })`). Ele memoiza automaticamente onde necessário, mas não substitui `useState`/`useEffect`/`useRef`/`useContext`, e `useCallback`/`useMemo` explícitos que garantem estabilidade de referência (efeitos, libs externas) devem continuar sendo avaliados caso a caso.
-- **Modelo de IA**: chamado via API REST do OpenRouter (`https://openrouter.ai/api/v1/chat/completions`), usando `response_format: { type: 'json_object' }` para forçar saída JSON. Modelo default: `google/gemini-2.5-flash`, configurável via `VITE_OPENROUTER_MODEL` no `.env`.
+- **Modelo de IA**: chamado via API REST do OpenRouter (`https://openrouter.ai/api/v1/chat/completions`), usando `response_format: { type: 'json_object' }` para forçar saída JSON. Não há mais variável de ambiente para o modelo — o usuário escolhe entre os modelos gratuitos listados em `src/utils/openrouter-models.ts` (`OPENROUTER_MODELS`) através de um `<select>` (`ModelPicker`).
+- **Persistência do modelo escolhido**: `src/utils/model-storage.ts` salva o `id` do modelo no `localStorage` (`getStoredModel`/`storeModel`), validando que o valor salvo ainda existe em `OPENROUTER_MODELS`; se não existir (ou não houver nada salvo), cai no `DEFAULT_OPENROUTER_MODEL_ID` (primeiro item da lista). O estado inicial de `HomePage` já nasce com `getStoredModel()`, então o modelo usado na visita anterior volta selecionado automaticamente.
 - **Configuração obrigatória**: `.env` com `VITE_OPENROUTER_API_KEY` (chave do OpenRouter). Sem ela, o hook lança erro antes de chamar a API.
 - **Chamada via `useQuery`**: `src/hook/use-generate-prompt.ts` usa `useQuery` com `enabled: false` e um `useRef` guardando a última descrição de tarefa; a função `generate(taskDescription)` atualiza o ref e chama `refetch()` — evita `useMutation`, mantendo a chamada dentro do ecossistema do React Query como pedido.
 - **Estrutura de pastas** (`src/`):
   - `pages/` — páginas (ex.: `home-page.tsx` → componente `HomePage`).
-  - `components/` — componentes de UI reutilizáveis (`accordion.tsx`, `json-panel.tsx`, `prompt-text-panel.tsx`, `task-form.tsx`, `generation-status.tsx`).
+  - `components/` — componentes de UI reutilizáveis (`accordion.tsx`, `json-panel.tsx`, `prompt-text-panel.tsx`, `task-form.tsx`, `generation-status.tsx`, `model-picker.tsx`, `theme-menu.tsx`).
   - `schemas/` — schemas zod (`prompt-specification.schema.ts`, `task-form.schema.ts`) e os tipos inferidos a partir deles.
-  - `types/` — tipos compostos que combinam os schemas (`prompt.ts`).
-  - `utils/` — funções puras auxiliares (`build-codex-prompt.ts`).
-  - `hook/` — hook único com a lógica de chamada ao OpenRouter + `useQuery` (`use-generate-prompt.ts`).
+  - `types/` — tipos compostos que combinam os schemas (`prompt.ts`) e o tipo do tema (`theme.ts`).
+  - `utils/` — funções e dados puros auxiliares (`build-codex-prompt.ts`, `openrouter-models.ts`, `model-storage.ts`, `theme-options.ts`).
+  - `hook/` — hooks da aplicação: chamada ao OpenRouter + `useQuery` (`use-generate-prompt.ts`) e o tema (`use-theme.ts`).
 - **Convenção de nomes**: arquivos e pastas em `kebab-case`; funções, variáveis e parâmetros em `camelCase`; componentes e tipos em `PascalCase`. Aplicado via ESLint (`eslint-plugin-check-file` + `@typescript-eslint/naming-convention`).
 - **Tratamento de erro**: respostas de erro do OpenRouter (incluindo rate limit HTTP 429) são tratadas com mensagens específicas, priorizando `error.metadata.raw` quando disponível.
 - **Segurança**: como a chamada é feita direto do frontend, a chave de API fica exposta no bundle do navegador — README já alerta que, para produção, deve-se usar um backend/proxy.

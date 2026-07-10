@@ -3,9 +3,9 @@ import { useRef } from 'react';
 import { parsePromptSpecification } from '../schemas/prompt-specification.schema';
 import type { PromptGenerationResult } from '../types/prompt';
 import { buildCodexPrompt } from '../utils/build-codex-prompt';
+import { DEFAULT_OPENROUTER_MODEL_ID } from '../utils/openrouter-models';
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
-const DEFAULT_MODEL = 'google/gemini-2.5-flash';
 
 const SYSTEM_MESSAGE = `
 Você cria especificações técnicas para agentes de programação como Codex.
@@ -31,11 +31,11 @@ type OpenRouterResponse = {
   };
 };
 
-const getOpenRouterModel = () => import.meta.env.VITE_OPENROUTER_MODEL || DEFAULT_MODEL;
-
-const fetchPromptGeneration = async (taskDescription: string): Promise<PromptGenerationResult> => {
+const fetchPromptGeneration = async (
+  taskDescription: string,
+  model: string,
+): Promise<PromptGenerationResult> => {
   const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY as string | undefined;
-  const model = getOpenRouterModel();
 
   if (!apiKey) {
     throw new Error('Configure VITE_OPENROUTER_API_KEY no arquivo .env antes de gerar prompts.');
@@ -68,7 +68,7 @@ const fetchPromptGeneration = async (taskDescription: string): Promise<PromptGen
     if (response.status === 429 || payload.error?.code === 429) {
       throw new Error(
         rawProviderMessage ||
-          `O modelo "${model}" está temporariamente limitado no OpenRouter. Tente novamente em alguns instantes ou troque VITE_OPENROUTER_MODEL no .env.`,
+          `O modelo "${model}" está temporariamente limitado no OpenRouter. Tente novamente em alguns instantes ou escolha outro modelo na lista.`,
       );
     }
 
@@ -91,12 +91,12 @@ const fetchPromptGeneration = async (taskDescription: string): Promise<PromptGen
   };
 };
 
-export const useGeneratePrompt = () => {
+export const useGeneratePrompt = (model: string = DEFAULT_OPENROUTER_MODEL_ID) => {
   const taskDescriptionRef = useRef('');
 
   const query = useQuery({
-    queryKey: ['generate-prompt'],
-    queryFn: () => fetchPromptGeneration(taskDescriptionRef.current),
+    queryKey: ['generate-prompt', model],
+    queryFn: () => fetchPromptGeneration(taskDescriptionRef.current, model),
     enabled: false,
     retry: false,
   });

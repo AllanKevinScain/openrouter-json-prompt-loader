@@ -1,57 +1,69 @@
 import { AlertCircle } from 'lucide-react';
+import { useState } from 'react';
 import { Accordion } from '../components/accordion';
 import { GenerationStatus } from '../components/generation-status';
 import { JsonPanel } from '../components/json-panel';
+import { ModelPicker } from '../components/model-picker';
 import { PromptTextPanel } from '../components/prompt-text-panel';
 import { TaskForm } from '../components/task-form';
 import { useGeneratePrompt } from '../hook/use-generate-prompt';
 import type { TaskFormValues } from '../types/prompt';
+import { getStoredModel, storeModel } from '../utils/model-storage';
 
 export function HomePage() {
-  const { data, error, generate, isError, isFetching } = useGeneratePrompt();
+  const [selectedModel, setSelectedModel] = useState(getStoredModel);
+  const { data, error, generate, isError, isFetching } = useGeneratePrompt(selectedModel);
 
   const handleSubmit = (values: TaskFormValues) => {
     generate(values.taskDescription);
   };
 
+  const handleSelectModel = (model: string) => {
+    setSelectedModel(model);
+    storeModel(model);
+  };
+
   return (
-    <main className="min-h-screen bg-paper">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
-        <section className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
-          <div className="h-fit rounded-lg border border-line bg-white p-5 shadow-panel">
+    <main className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8">
+      <section className="grid gap-6 lg:grid-cols-[0.85fr_1.15fr]">
+        <div className="card group h-fit">
+          <div className="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(to_bottom_right,color-mix(in_srgb,var(--color-primary)_25%,transparent),color-mix(in_srgb,var(--color-secondary)_25%,transparent))] opacity-80 transition group-hover:opacity-100" />
+
+          <div className="relative z-10 space-y-4 p-5">
+            <ModelPicker onSelectModel={handleSelectModel} selectedModel={selectedModel} />
             <TaskForm isLoading={isFetching} onSubmit={handleSubmit} />
           </div>
+        </div>
 
-          <div className="space-y-5">
-            {isError ? (
-              <div className="flex gap-3 rounded-lg border border-coral/30 bg-coral/10 p-4 text-sm leading-6 text-ink">
-                <AlertCircle className="mt-0.5 size-5 shrink-0 text-coral" />
-                <div>
-                  <strong className="block text-coral">Falha ao gerar o prompt</strong>
-                  {error instanceof Error ? error.message : 'Erro inesperado ao gerar o prompt.'}
-                </div>
+        <div className="space-y-5">
+          {isError ? (
+            <div className="flex gap-3 rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm leading-6 text-text">
+              <AlertCircle className="mt-0.5 size-5 shrink-0 text-red-400" />
+              <div>
+                <strong className="block text-red-400">Falha ao gerar o prompt</strong>
+                {error instanceof Error ? error.message : 'Erro inesperado ao gerar o prompt.'}
               </div>
-            ) : null}
+            </div>
+          ) : null}
 
-            {isFetching ? <GenerationStatus /> : null}
+          {isFetching ? <GenerationStatus /> : null}
 
-            {data ? (
-              <>
-                <Accordion defaultOpen title="Prompt">
-                  <PromptTextPanel prompt={data.finalPrompt} />
-                </Accordion>
-                <Accordion defaultOpen title="JSON completo">
-                  <JsonPanel data={data.finalPromptJson} />
-                </Accordion>
-              </>
-            ) : !isFetching ? (
-              <div className="rounded-lg border border-dashed border-line bg-white p-8 text-center text-sm leading-6 text-ink/65">
-                O prompt final aparecerá aqui depois da resposta do OpenRouter.
-              </div>
-            ) : null}
-          </div>
-        </section>
-      </div>
+          {data ? (
+            <>
+              <Accordion defaultOpen title="Prompt">
+                <PromptTextPanel prompt={data.finalPrompt} />
+              </Accordion>
+              <Accordion defaultOpen title="JSON completo">
+                <JsonPanel data={data.finalPromptJson} />
+              </Accordion>
+            </>
+          ) : !isFetching ? (
+            <div className="rounded-lg border border-dashed border-border p-8 text-center text-sm leading-6 text-text/65">
+              O prompt final aparecerá aqui depois da resposta do OpenRouter.
+            </div>
+          ) : null}
+        </div>
+      </section>
     </main>
   );
 }

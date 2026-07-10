@@ -5,15 +5,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: '#17211b',
-        moss: '#315f44',
-        leaf: '#4f8a5f',
-        paper: '#f7f8f3',
-        line: '#d9dfd3',
-        coral: '#d9654f',
+        bg: 'var(--color-bg)',
+        text: 'var(--color-text)',
+        primary: 'var(--color-primary)',
+        secondary: 'var(--color-secondary)',
+        border: 'var(--color-border)',
       },
-      boxShadow: {
-        panel: '0 18px 60px rgba(23, 33, 27, 0.10)',
+      container: {
+        center: true,
+        padding: {
+          DEFAULT: '1rem',
+          sm: '1.5rem',
+          lg: '2rem',
+          xl: '2.5rem',
+        },
       },
     },
   },

@@ -1,21 +1,131 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@config "../tailwind.config.ts";
+@import 'tailwindcss';
+
+html {
+  scroll-behavior: smooth;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
 :root {
-  color: #17211b;
-  background: #f7f8f3;
-  font-family:
-    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-    sans-serif;
+  color-scheme: light dark;
+}
+
+* {
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    border-color 0.2s;
 }
 
 body {
   margin: 0;
   min-width: 320px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 textarea,
-button {
+button,
+select {
   font: inherit;
+}
+
+@layer components {
+  .card {
+    position: relative;
+    overflow: hidden;
+    background-color: color-mix(in srgb, var(--color-text) 4%, var(--color-bg));
+    border: 1px solid color-mix(in srgb, var(--color-text) 12%, transparent);
+    border-radius: 1rem;
+  }
+
+  .surface {
+    background-color: color-mix(in srgb, var(--color-text) 6%, var(--color-bg));
+  }
+}
+
+:root {
+  --color-bg: #0f172a;
+  --color-text: #e5e7eb;
+  --color-primary: #3b82f6;
+  --color-secondary: #a855f7;
+  --color-border: #1f2937;
+}
+
+/* LIGHT */
+[data-theme='light'] {
+  --color-bg: #ffffff;
+  --color-text: #09090b;
+  --color-primary: #2563eb;
+  --color-secondary: #9333ea;
+  --color-border: #e4e4e7;
+}
+
+/* DARK */
+[data-theme='dark'] {
+  --color-bg: #09090b;
+  --color-text: #fafafa;
+  --color-primary: #2563eb;
+  --color-secondary: #9333ea;
+  --color-border: #27272a;
+}
+
+/* ROCKETSEAT */
+[data-theme='rocketseat'] {
+  --color-bg: #0a0a0a;
+  --color-text: #e1e1e6;
+  --color-primary: #8257e6;
+  --color-secondary: #996dff;
+  --color-border: #202024;
+}
+
+/* MINECRAFT */
+[data-theme='minecraft'] {
+  --color-bg: #1e3a1e;
+  --color-text: #d4ffd4;
+  --color-primary: #3fa34d;
+  --color-secondary: #8b5a2b;
+  --color-border: #2d5a2d;
+}
+
+/* ALURA */
+[data-theme='alura'] {
+  --color-bg: #0b2545;
+  --color-text: #e0f2ff;
+  --color-primary: #00a3ff;
+  --color-secondary: #00e0ff;
+  --color-border: #123d6b;
+}
+
+/* INSTAGRAM */
+[data-theme='instagram'] {
+  --color-bg: #000000;
+  --color-text: #fafafa;
+  --color-primary: #dd2a7b;
+  --color-secondary: #8134af;
+  --color-border: #262626;
+}
+
+.scroll-div::-webkit-scrollbar {
+  width: 9px;
+}
+
+.scroll-div::-webkit-scrollbar-track {
+  background: var(--color-bg);
+  border-radius: 5px;
+}
+
+.scroll-div::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 5px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .scroll-div {
+    scrollbar-color: var(--color-primary) var(--color-secondary);
+  }
 }
