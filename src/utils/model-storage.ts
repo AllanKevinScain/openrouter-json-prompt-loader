@@ -1,4 +1,4 @@
-import { DEFAULT_OPENROUTER_MODEL_ID, OPENROUTER_MODELS } from './openrouter-models';
+import { DEFAULT_OPENROUTER_MODEL_ID, OPENROUTER_MODELS } from '../constants/openrouter-models';
 
 const STORAGE_KEY = 'prompt-loader:selected-model';
 

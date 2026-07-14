@@ -1,20 +1,18 @@
-import { OPENROUTER_MODELS } from '../utils/openrouter-models';
+import { ModelPickerProps } from '../types/components/model-picker.type';
+import { OPENROUTER_MODELS } from '../constants/openrouter-models';
+import { Text } from './text';
 
-type ModelPickerProps = {
-  selectedModel: string;
-  onSelectModel: (model: string) => void;
-};
-
-export function ModelPicker({ onSelectModel, selectedModel }: ModelPickerProps) {
+export function ModelPicker(props: ModelPickerProps) {
+  const { selectedModel, onSelectModel } = props;
   const activeModel = OPENROUTER_MODELS.find((model) => model.id === selectedModel);
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-semibold text-text" htmlFor="openrouter-model">
+      <label className="text-text block text-sm font-semibold" htmlFor="openrouter-model">
         Modelo gratuito do OpenRouter
       </label>
       <select
-        className="w-full rounded-lg border border-border bg-bg px-3 py-2.5 text-sm text-text outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/15"
+        className="border-border bg-bg text-text focus:border-primary focus:ring-primary/15 w-full rounded-lg border px-3 py-2.5 text-sm transition outline-none focus:ring-4"
         id="openrouter-model"
         onChange={(event) => onSelectModel(event.target.value)}
         value={selectedModel}
@@ -25,12 +23,12 @@ export function ModelPicker({ onSelectModel, selectedModel }: ModelPickerProps) 
           </option>
         ))}
       </select>
-      {activeModel ? (
-        <p className="text-sm leading-6 text-text/65">
+      {activeModel && (
+        <Text>
           {activeModel.description}{' '}
-          <span className="font-semibold text-primary">{activeModel.contextWindow} contexto</span>
-        </p>
-      ) : null}
+          <span className="text-primary font-semibold">{activeModel.contextWindow} contexto</span>
+        </Text>
+      )}
     </div>
   );
 }

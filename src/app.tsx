@@ -1,7 +1,7 @@
 import { ThemeMenu } from './components/theme-menu';
 import { HomePage } from './pages/home-page';
 
-function App() {
+export default function App() {
   return (
     <div className="min-h-screen bg-bg text-text">
       <header>
@@ -14,5 +14,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

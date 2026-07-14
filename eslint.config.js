@@ -4,35 +4,43 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import { defineConfig, globalIgnores } from 'eslint/config'
 
-export default tseslint.config(
-  {
-    ignores: ['dist'],
-  },
-  js.configs.recommended,
-  ...tseslint.configs.recommended,
+export default defineConfig([
+  globalIgnores(['dist']),
   {
     files: ['**/*.{ts,tsx}'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs.flat.recommended,
+      reactRefresh.configs.vite,
+      checkFile.configs.recommended,
+    ],
     languageOptions: {
-      ecmaVersion: 2020,
       globals: globals.browser,
-    },
-    plugins: {
-      'check-file': checkFile,
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 
-      // Máximo de 120 linhas por arquivo.
-      'max-lines': ['error', { max: 120, skipBlankLines: true, skipComments: true }],
+      'react-refresh/only-export-components': [
+        'warn',
+        {
+          allowConstantExport: true,
+        },
+      ],
 
-      // Apenas aspas simples.
+      'max-lines': [
+        'error',
+        {
+          max: 120,
+          skipBlankLines: true,
+          skipComments: true,
+        },
+      ],
+
       quotes: ['error', 'single', { avoidEscape: true }],
 
-      // camelCase para funções/variáveis, PascalCase para componentes e tipos.
       '@typescript-eslint/naming-convention': [
         'error',
         {
@@ -55,13 +63,22 @@ export default tseslint.config(
         },
       ],
 
-      // Arquivos e pastas do projeto em kebab-case.
       'check-file/filename-naming-convention': [
         'error',
-        { '**/*.{ts,tsx}': 'KEBAB_CASE' },
-        { ignoreMiddleExtensions: true },
+        {
+          '**/*.{ts,tsx}': 'KEBAB_CASE',
+        },
+        {
+          ignoreMiddleExtensions: true,
+        },
       ],
-      'check-file/folder-naming-convention': ['error', { 'src/**/': 'KEBAB_CASE' }],
+
+      'check-file/folder-naming-convention': [
+        'error',
+        {
+          'src/**/': 'KEBAB_CASE',
+        },
+      ],
     },
   },
-);
+]);

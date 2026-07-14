@@ -1,32 +1,8 @@
-import { CheckCircle2, Clock3, Loader2, Send, Sparkles } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
-
-const steps = [
-  {
-    label: 'Preparando requisição',
-    detail: 'Validando a descrição e montando a mensagem para o modelo.',
-    icon: Send,
-    afterSeconds: 0,
-  },
-  {
-    label: 'Aguardando o OpenRouter',
-    detail: 'A solicitação foi enviada e o provedor está processando a resposta.',
-    icon: Loader2,
-    afterSeconds: 2,
-  },
-  {
-    label: 'Gerando especificação',
-    detail: 'O modelo está organizando contexto, requisitos, contrato e testes.',
-    icon: Sparkles,
-    afterSeconds: 6,
-  },
-  {
-    label: 'Finalizando prompt',
-    detail: 'Assim que a resposta chegar, o app valida o JSON e monta o texto para Codex.',
-    icon: Clock3,
-    afterSeconds: 12,
-  },
-];
+import { CheckCircle2, Loader2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { steps } from '../constants/generation-status';
+import { Text } from './text';
+import { twMerge } from 'tailwind-merge';
 
 export function GenerationStatus() {
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
@@ -39,20 +15,18 @@ export function GenerationStatus() {
     return () => window.clearInterval(intervalId);
   }, []);
 
-  const activeStepIndex = useMemo(() => {
-    return steps.reduce((activeIndex, step, index) => {
-      return elapsedSeconds >= step.afterSeconds ? index : activeIndex;
-    }, 0);
-  }, [elapsedSeconds]);
+  const activeStepIndex = steps.reduce((activeIndex, step, index) => {
+    return elapsedSeconds >= step.afterSeconds ? index : activeIndex;
+  }, 0);
 
   return (
     <section className="card p-5">
-      <div className="flex flex-col gap-2 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="border-border flex flex-col gap-2 border-b pb-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-lg font-bold text-text">Gerando prompt</h2>
-          <p className="text-sm leading-6 text-text/65">Tempo decorrido: {elapsedSeconds}s</p>
+          <h2 className="text-text text-lg font-bold">Gerando prompt</h2>
+          <Text>Tempo decorrido: {elapsedSeconds}s</Text>
         </div>
-        <div className="inline-flex min-h-9 items-center gap-2 self-start rounded-lg bg-primary/10 px-3 py-2 text-sm font-semibold text-primary">
+        <div className="bg-primary/10 text-primary inline-flex min-h-9 items-center gap-2 self-start rounded-lg px-3 py-2 text-sm font-semibold">
           <Loader2 className="size-4 animate-spin" />
           Processando
         </div>
@@ -66,21 +40,23 @@ export function GenerationStatus() {
 
           return (
             <li
-              className={`flex gap-3 rounded-lg border p-3 transition ${
-                isActive ? 'border-primary/40 bg-primary/10' : 'border-border surface'
-              }`}
+              className={twMerge(
+                'flex gap-3 rounded-lg border p-3 transition',
+                isActive ? 'border-primary/40 bg-primary/10' : 'border-border surface',
+              )}
               key={step.label}
             >
               <div
-                className={`flex size-9 shrink-0 items-center justify-center rounded-lg ${
-                  isDone || isActive ? 'bg-primary text-white' : 'surface text-text/45'
-                }`}
+                className={twMerge(
+                  'flex size-9 shrink-0 items-center justify-center rounded-lg',
+                  isDone || isActive ? 'bg-primary text-white' : 'surface text-text/45',
+                )}
               >
                 {isDone ? <CheckCircle2 className="size-4" /> : <Icon className="size-4" />}
               </div>
               <div>
-                <p className="text-sm font-bold text-text">{step.label}</p>
-                <p className="mt-1 text-sm leading-6 text-text/65">{step.detail}</p>
+                <Text className="font-bold">{step.label}</Text>
+                <Text className="mt-1">{step.detail}</Text>
               </div>
             </li>
           );

@@ -1,14 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
-import { useState, type ReactNode } from 'react';
+import { useState } from 'react';
+import { AccordionProps } from '../types/components/accordion.type';
 
-type AccordionProps = {
-  title: string;
-  defaultOpen?: boolean;
-  children: ReactNode;
-};
-
-export function Accordion({ title, defaultOpen = true, children }: AccordionProps) {
+export function Accordion(props: AccordionProps) {
+  const { title, defaultOpen = true, children } = props;
   const [open, setOpen] = useState(defaultOpen);
 
   return (
@@ -22,23 +18,23 @@ export function Accordion({ title, defaultOpen = true, children }: AccordionProp
           onClick={() => setOpen((current) => !current)}
           type="button"
         >
-          <h2 className="text-base font-bold text-text">{title}</h2>
+          <h2 className="text-text text-base font-bold">{title}</h2>
           <motion.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.2 }}>
-            <ChevronDown className="size-4 shrink-0 text-text/60" />
+            <ChevronDown className="text-text/60 size-4 shrink-0" />
           </motion.span>
         </button>
         <AnimatePresence initial={false}>
-          {open ? (
+          {open && (
             <motion.div
               animate={{ height: 'auto', opacity: 1 }}
-              className="overflow-hidden border-t border-border"
+              className="border-border overflow-hidden border-t"
               exit={{ height: 0, opacity: 0 }}
               initial={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.2, ease: 'easeInOut' }}
             >
               {children}
             </motion.div>
-          ) : null}
+          )}
         </AnimatePresence>
       </div>
     </section>

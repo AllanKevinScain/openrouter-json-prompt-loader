@@ -1,18 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
-import type { ThemeType } from '../types/theme';
-import { DEFAULT_THEME, isThemeType } from '../utils/theme-options';
-
-const STORAGE_KEY = 'theme';
-
-const getStoredTheme = (): ThemeType => {
-  if (typeof window === 'undefined') {
-    return DEFAULT_THEME;
-  }
-
-  const stored = window.localStorage.getItem(STORAGE_KEY);
-
-  return isThemeType(stored) ? stored : DEFAULT_THEME;
-};
+import { STORAGE_KEY } from '../../constants/keys';
+import { getStoredTheme } from './get-stored-theme';
+import { ThemeType } from '../../types/hooks/use-theme.type';
 
 export const useTheme = () => {
   const [theme, setThemeState] = useState<ThemeType>(getStoredTheme);
