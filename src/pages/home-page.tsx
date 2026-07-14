@@ -7,7 +7,7 @@ import { ModelPicker } from '../components/model-picker';
 import { PromptTextPanel } from '../components/prompt-text-panel';
 import { TaskForm } from '../components/task-form';
 import { useGeneratePrompt } from '../hook/use-generate-prompt';
-import type { TaskFormValues } from '../types/prompt';
+import type { TaskFormValues } from '../schemas/task-form.schema';
 import { getStoredModel, storeModel } from '../utils/model-storage';
 import { Text } from '../components/text';
 

@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
 
 type HMTLButtonPickedProps = Pick<ComponentProps<'button'>, 'className' | 'type' | 'title' | 'onClick' | 'children'>;
 

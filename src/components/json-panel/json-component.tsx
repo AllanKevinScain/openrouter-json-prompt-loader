@@ -1,6 +1,6 @@
 import { JsonView, collapseAllNested, darkStyles, defaultStyles } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
-import { JsonPanelComponentProps } from '../../types/components/json-panel.type';
+import type { JsonPanelComponentProps } from '../../types/components/json-panel.type';
 
 export function JsonPanelComponent(props: JsonPanelComponentProps) {
   const { data, theme } = props;

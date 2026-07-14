@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
-import { AccordionProps } from '../types/components/accordion.type';
+import type { AccordionProps } from '../types/components/accordion.type';
 
 export function Accordion(props: AccordionProps) {
   const { title, defaultOpen = true, children } = props;

@@ -1,5 +1,5 @@
 import { THEME_OPTIONS } from '../../constants/theme-options';
-import { ThemeType } from '../../types/hooks/use-theme.type';
+import type { ThemeType } from '../../types/hooks/use-theme.type';
 
 export const DEFAULT_THEME: ThemeType = 'dark';
 

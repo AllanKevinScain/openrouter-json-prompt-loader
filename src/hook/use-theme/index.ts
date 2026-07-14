@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { STORAGE_KEY } from '../../constants/keys';
 import { getStoredTheme } from './get-stored-theme';
-import { ThemeType } from '../../types/hooks/use-theme.type';
+import type { ThemeType } from '../../types/hooks/use-theme.type';
 
 export const useTheme = () => {
   const [theme, setThemeState] = useState<ThemeType>(getStoredTheme);

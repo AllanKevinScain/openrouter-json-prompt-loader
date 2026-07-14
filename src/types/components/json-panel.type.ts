@@ -1,4 +1,4 @@
-import { ThemeType } from '../hooks/use-theme.type';
+import type { ThemeType } from '../hooks/use-theme.type';
 
 export interface JsonPanelProps {
   data: unknown;

@@ -1,4 +1,4 @@
-import { OpenRouterModelOption } from '../types/contants/openrouter-models.type';
+import type { OpenRouterModelOption } from '../types/contants/openrouter-models.type';
 
 export const OPENROUTER_MODELS: OpenRouterModelOption[] = [
   {

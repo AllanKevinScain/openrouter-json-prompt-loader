@@ -1,5 +1,5 @@
 import { STORAGE_KEY } from '../../constants/keys';
-import { ThemeType } from '../../types/hooks/use-theme.type';
+import type { ThemeType } from '../../types/hooks/use-theme.type';
 import { DEFAULT_THEME, isThemeType } from './is-theme-type';
 
 export const getStoredTheme = (): ThemeType => {

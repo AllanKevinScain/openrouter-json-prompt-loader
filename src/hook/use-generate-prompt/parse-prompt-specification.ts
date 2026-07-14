@@ -1,4 +1,5 @@
-import { PromptSpecification, promptSpecificationSchema } from '../../schemas/prompt-specification.schema';
+import type { PromptSpecification } from '../../schemas/prompt-specification.schema';
+import { promptSpecificationSchema } from '../../schemas/prompt-specification.schema';
 
 export function parsePromptSpecification(content: string): PromptSpecification {
   const normalizedContent = content

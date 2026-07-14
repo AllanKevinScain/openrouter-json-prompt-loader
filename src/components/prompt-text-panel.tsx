@@ -1,6 +1,6 @@
 import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
-import { PromptTextPanelProps } from '../types/components/prompt-text-panel.type';
+import type { PromptTextPanelProps } from '../types/components/prompt-text-panel.type';
 import { Button } from './button';
 
 export function PromptTextPanel(props: PromptTextPanelProps) {

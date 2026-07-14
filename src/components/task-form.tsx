@@ -1,9 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { taskFormSchema } from '../schemas/task-form.schema';
-import type { TaskFormValues } from '../types/prompt';
+import type { TaskFormValues } from '../schemas/task-form.schema';
 import { Button } from './button';
-import { TaskFormProps } from '../types/components/task-form.type';
+import type { TaskFormProps } from '../types/components/task-form.type';
 import { taskFormDefaultValues } from '../constants/task-form';
 import { WandSparkles } from 'lucide-react';
 

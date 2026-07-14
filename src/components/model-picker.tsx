@@ -1,4 +1,4 @@
-import { ModelPickerProps } from '../types/components/model-picker.type';
+import type { ModelPickerProps } from '../types/components/model-picker.type';
 import { OPENROUTER_MODELS } from '../constants/openrouter-models';
 import { Text } from './text';
 

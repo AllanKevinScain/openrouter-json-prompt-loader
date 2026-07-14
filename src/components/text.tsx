@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import { TextProps } from '../types/components/text.type';
+import type { TextProps } from '../types/components/text.type';
 
 export function Text(props: TextProps) {
   const { children, className, variant = 'default' } = props;

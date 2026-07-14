@@ -1,7 +1,7 @@
 import { buildCodexPrompt } from './build-codex-prompt';
 import { SYSTEM_MESSAGE, responseFormat } from '../../constants/use-generate-prompt';
 import { parsePromptSpecification } from './parse-prompt-specification';
-import { OpenRouterResponse, PromptGenerationResult } from '../../types/hooks/use-generate-prompt.type';
+import type { OpenRouterResponse, PromptGenerationResult } from '../../types/hooks/use-generate-prompt.type';
 
 export async function fetchPromptGeneration(taskDescription: string, model: string): Promise<PromptGenerationResult> {
   const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY as string | undefined;

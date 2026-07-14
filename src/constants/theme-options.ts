@@ -1,4 +1,4 @@
-import { ThemeOption } from '../types/hooks/use-theme.type';
+import type { ThemeOption } from '../types/hooks/use-theme.type';
 
 export const THEME_OPTIONS: ThemeOption[] = [
   { value: 'light', label: 'Claro' },

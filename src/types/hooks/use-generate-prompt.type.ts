@@ -1,4 +1,4 @@
-import { PromptSpecification } from '../../schemas/prompt-specification.schema';
+import type { PromptSpecification } from '../../schemas/prompt-specification.schema';
 
 export type OpenRouterResponse = {
   choices?: Array<{ message?: { content?: string } }>;

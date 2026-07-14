@@ -2,7 +2,7 @@ import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
 import { useTheme } from '../../hook/use-theme';
 import { Button } from '../button';
-import { JsonPanelProps } from '../../types/components/json-panel.type';
+import type { JsonPanelProps } from '../../types/components/json-panel.type';
 import { JsonPanelComponent } from './json-component';
 
 export function JsonPanel(props: JsonPanelProps) {

@@ -1,5 +1,5 @@
 import { twMerge } from 'tailwind-merge';
-import { ButtonProps } from '../types/components/button.type';
+import type { ButtonProps } from '../types/components/button.type';
 import { Loader2 } from 'lucide-react';
 
 export function Button(props: ButtonProps) {
