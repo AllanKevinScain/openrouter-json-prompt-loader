@@ -129,3 +129,8 @@ select {
     scrollbar-color: var(--color-primary) var(--color-secondary);
   }
 }
+
+
+select {
+  border-right: 16px solid transparent
+}

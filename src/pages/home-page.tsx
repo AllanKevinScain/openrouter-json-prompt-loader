@@ -7,8 +7,9 @@ import { ModelPicker } from '../components/model-picker';
 import { PromptTextPanel } from '../components/prompt-text-panel';
 import { TaskForm } from '../components/task-form';
 import { useGeneratePrompt } from '../hook/use-generate-prompt';
-import type { TaskFormValues } from '../types/prompt';
+import type { TaskFormValues } from '../schemas/task-form.schema';
 import { getStoredModel, storeModel } from '../utils/model-storage';
+import { Text } from '../components/text';
 
 export function HomePage() {
   const [selectedModel, setSelectedModel] = useState(getStoredModel);
@@ -37,7 +38,7 @@ export function HomePage() {
 
         <div className="space-y-5">
           {isError ? (
-            <div className="flex gap-3 rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm leading-6 text-text">
+            <div className="text-text flex gap-3 rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm leading-6">
               <AlertCircle className="mt-0.5 size-5 shrink-0 text-red-400" />
               <div>
                 <strong className="block text-red-400">Falha ao gerar o prompt</strong>
@@ -46,22 +47,24 @@ export function HomePage() {
             </div>
           ) : null}
 
-          {isFetching ? <GenerationStatus /> : null}
-
-          {data ? (
+          {data && (
             <>
-              <Accordion defaultOpen title="Prompt">
+              <Accordion defaultOpen title="Formato .txt">
                 <PromptTextPanel prompt={data.finalPrompt} />
               </Accordion>
-              <Accordion defaultOpen title="JSON completo">
+              <Accordion title="Formato .json">
                 <JsonPanel data={data.finalPromptJson} />
               </Accordion>
             </>
-          ) : !isFetching ? (
-            <div className="rounded-lg border border-dashed border-border p-8 text-center text-sm leading-6 text-text/65">
-              O prompt final aparecerá aqui depois da resposta do OpenRouter.
+          )}
+
+          {!data && isFetching && <GenerationStatus />}
+
+          {!data && !isFetching && (
+            <div className="border-border rounded-lg border border-dashed p-8">
+              <Text className="text-center">O prompt final aparecerá aqui depois da resposta do OpenRouter.</Text>
             </div>
-          ) : null}
+          )}
         </div>
       </section>
     </main>

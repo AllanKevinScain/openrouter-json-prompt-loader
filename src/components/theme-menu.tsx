@@ -3,7 +3,8 @@ import { Palette } from 'lucide-react';
 import { useState } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { useTheme } from '../hook/use-theme';
-import { THEME_OPTIONS } from '../utils/theme-options';
+import { Button } from './button';
+import { THEME_OPTIONS } from '../constants/theme-options';
 
 export function ThemeMenu() {
   const { setTheme, theme } = useTheme();
@@ -11,14 +12,14 @@ export function ThemeMenu() {
 
   return (
     <div className="relative">
-      <button
-        aria-label="Alternar tema"
-        className="relative z-50 flex size-11 items-center justify-center rounded-xl border border-[color-mix(in_srgb,var(--color-text)_15%,transparent)] bg-[color-mix(in_srgb,var(--color-bg)_90%,transparent)] transition-all hover:bg-[color-mix(in_srgb,var(--color-primary)_10%,transparent)]"
-        onClick={() => setOpen((current) => !current)}
-        type="button"
-      >
-        <Palette className="size-5 text-(--color-primary)" />
-      </button>
+      <Button
+          aria-label="Alternar tema"
+          variant='outline'
+          onClick={() => setOpen((current) => !current)}
+          className="relative z-50"
+        >
+          <Palette className="size-5 text-(--color-primary)" />
+        </Button>
 
       <AnimatePresence>
         {open ? (
@@ -28,7 +29,7 @@ export function ThemeMenu() {
             exit={{ opacity: 0, scale: 0.98, y: -10 }}
             initial={{ opacity: 0, scale: 0.98, y: -20 }}
             transition={{ duration: 0.25 }}
-          >
+          >../prompt
             <nav className="relative flex max-h-75 flex-col gap-2 overflow-auto scroll-div">
               {THEME_OPTIONS.map((option) => (
                 <button

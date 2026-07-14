@@ -1,25 +1,22 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2, WandSparkles } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { taskFormSchema } from '../schemas/task-form.schema';
-import type { TaskFormValues } from '../types/prompt';
+import type { TaskFormValues } from '../schemas/task-form.schema';
+import { Button } from './button';
+import type { TaskFormProps } from '../types/components/task-form.type';
+import { taskFormDefaultValues } from '../constants/task-form';
+import { WandSparkles } from 'lucide-react';
 
-type TaskFormProps = {
-  isLoading: boolean;
-  onSubmit: (values: TaskFormValues) => void;
-};
+export function TaskForm(props: TaskFormProps) {
+  const { isLoading, onSubmit } = props;
 
-export function TaskForm({ isLoading, onSubmit }: TaskFormProps) {
   const {
     formState: { errors },
     handleSubmit,
     register,
   } = useForm<TaskFormValues>({
     resolver: zodResolver(taskFormSchema),
-    defaultValues: {
-      taskDescription:
-        'Preciso de um endpoint REST para cadastrar usuários com nome, email e senha, com validação e hash de senha.',
-    },
+    defaultValues: taskFormDefaultValues,
   });
 
   return (
@@ -34,19 +31,14 @@ export function TaskForm({ isLoading, onSubmit }: TaskFormProps) {
           placeholder="Ex: Criar uma API de autenticação com login, refresh token e validação..."
           {...register('taskDescription')}
         />
-        {errors.taskDescription ? (
+        {errors.taskDescription && (
           <p className="mt-2 text-sm font-medium text-red-400">{errors.taskDescription.message}</p>
-        ) : null}
+        )}
       </div>
 
-      <button
-        className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-primary to-secondary px-5 py-3 text-sm font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
-        disabled={isLoading}
-        type="submit"
-      >
-        {isLoading ? <Loader2 className="size-4 animate-spin" /> : <WandSparkles className="size-4" />}
-        {isLoading ? 'Gerando prompt...' : 'Gerar prompt para Codex'}
-      </button>
+      <Button isLoading={isLoading} type="submit">
+        <WandSparkles className="size-4" /> Gerar prompt
+      </Button>
     </form>
   );
 }
