@@ -1,7 +1,25 @@
 {
-  "name": "prompt-codex-app",
+  "name": "openrouter-json-prompt-loader",
   "private": true,
   "version": "0.1.0",
+  "description": "Gera especificações técnicas e prompts estruturados a partir de tarefas usando modelos gratuitos do OpenRouter.",
+  "author": "Allan Kevin Scain",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AllanKevinScain/openrouter-json-prompt-loader.git"
+  },
+  "homepage": "https://github.com/AllanKevinScain/openrouter-json-prompt-loader#readme",
+  "bugs": {
+    "url": "https://github.com/AllanKevinScain/openrouter-json-prompt-loader/issues"
+  },
+  "keywords": [
+    "openrouter",
+    "prompt",
+    "json",
+    "react",
+    "vite",
+    "typescript"
+  ],
   "type": "module",
   "engines": {
     "node": ">=20.19.0"
