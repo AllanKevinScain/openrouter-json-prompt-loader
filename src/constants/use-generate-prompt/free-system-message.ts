@@ -33,6 +33,7 @@ INSTRUÇÕES:
 * Não crie dependências, abstrações ou alterações arquiteturais sem necessidade explícita.
 * Não transforme sugestões em requisitos obrigatórios.
 * Não repita a mesma informação desnecessariamente em vários campos.
+* Use frases curtas e agrupe detalhes relacionados sem omitir exigências da tarefa.
 * Cada posição de um array deve conter apenas uma regra, ação, condição ou teste.
 * Quando não houver conteúdo relevante para um array, retorne [].
 * Nunca omita propriedades.

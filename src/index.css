@@ -110,6 +110,38 @@ select {
   --color-border: #262626;
 }
 
+/* Mantém os componentes Safira UI no mesmo tema visual do aplicativo. */
+:root,
+[data-theme] {
+  --sf-color-canvas: var(--color-bg);
+  --sf-color-surface: color-mix(in srgb, var(--color-text) 4%, var(--color-bg));
+  --sf-color-surface-raised: color-mix(in srgb, var(--color-text) 8%, var(--color-bg));
+  --sf-color-text: var(--color-text);
+  --sf-color-text-soft: color-mix(in srgb, var(--color-text) 68%, var(--color-bg));
+  --sf-color-border: var(--color-border);
+  --sf-color-border-strong: color-mix(in srgb, var(--color-text) 28%, var(--color-bg));
+  --sf-color-primary: var(--color-primary);
+  --sf-color-primary-hover: color-mix(in srgb, var(--color-primary) 82%, var(--color-bg));
+  --sf-color-primary-soft: color-mix(in srgb, var(--color-primary) 16%, var(--color-bg));
+  --sf-color-secondary: var(--color-secondary);
+  --sf-color-secondary-soft: color-mix(in srgb, var(--color-secondary) 16%, var(--color-bg));
+  --sf-color-focus: var(--color-secondary);
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+  --sf-color-on-primary: #ffffff;
+}
+
+[data-theme='dark'],
+[data-theme='rocketseat'],
+[data-theme='minecraft'],
+[data-theme='alura'],
+[data-theme='instagram'] {
+  color-scheme: dark;
+  --sf-color-on-primary: #ffffff;
+}
+
 .scroll-div::-webkit-scrollbar {
   width: 9px;
 }
